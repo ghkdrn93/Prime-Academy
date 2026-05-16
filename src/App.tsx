@@ -36,6 +36,7 @@ export default function App() {
   const [isIntensiveModalOpen, setIsIntensiveModalOpen] = useState(false);
   const [isTutoringModalOpen, setIsTutoringModalOpen] = useState(false);
   const [isConsultationFormOpen, setIsConsultationFormOpen] = useState(false);
+  const [selectedInstructorImg, setSelectedInstructorImg] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -140,6 +141,7 @@ export default function App() {
               Home
             </button>
             <a href="#programs" className="hover:text-white transition-colors">Programs</a>
+            <a href="#instructors" className="hover:text-white transition-colors">Instructors</a>
             <a href="#elite" className="hover:text-amber-500 transition-colors">Elite Track</a>
             <a href="#contact" className="hover:text-white transition-colors">Contact</a>
           </nav>
@@ -358,6 +360,61 @@ export default function App() {
             </div>
           </div>
         </motion.div>
+      </section>
+
+      {/* --- 4. 강사진 (Instructors) --- */}
+      <section id="instructors" className="relative overflow-hidden py-32 bg-neutral-950">
+        {/* 장식적 배경 요소 */}
+        <div className="absolute left-1/4 top-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-red-600/5 blur-[120px]" />
+        <div className="absolute right-1/4 bottom-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-red-900/5 blur-[120px]" />
+
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <motion.div {...fadeInUp} className="mb-24 text-center">
+            <div className="text-sm font-bold tracking-[0.4em] text-red-500 uppercase">Expert Faculty</div>
+            <h2 className="mt-4 text-5xl font-bold tracking-tighter text-white sm:text-7xl uppercase">PRIME Instructors</h2>
+            <p className="mx-auto mt-6 max-w-2xl text-lg font-bold text-neutral-400">
+              대치동 최정예 강사진의 노하우를 그대로 동탄 프라임 학원에서 만나보세요.<br />
+              단순한 수업을 넘어 학생의 미래를 함께 고민합니다.
+            </p>
+          </motion.div>
+          
+          <motion.div 
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="whileInView"
+            viewport={{ once: true }}
+            className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 xl:gap-14"
+          >
+            {[
+              "https://i.ibb.co/hRzTdx5Z/Kakao-Talk-20260516-123111670.jpg",
+              "https://i.ibb.co/2Y3ycZBF/Kakao-Talk-20260516-123116018.jpg",
+              "https://i.ibb.co/Xfxyfstt/Kakao-Talk-20260516-123121268.jpg",
+              "https://i.ibb.co/LdKwqy91/Kakao-Talk-20260516-123126573.jpg",
+              "https://i.ibb.co/YFgJ0T7W/Kakao-Talk-20260516-123213897.jpg",
+              "https://i.ibb.co/gMsRFvY8/Kakao-Talk-20260516-131248376.png",
+              "https://i.ibb.co/G3WFTZ4p/Kakao-Talk-20260516-133934830.png"
+            ].map((img, i) => (
+              <motion.div 
+                key={i}
+                variants={fadeInUp}
+                whileHover={{ y: -15 }}
+                onClick={() => setSelectedInstructorImg(img)}
+                className="group relative cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/10 bg-neutral-900/50 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 hover:border-red-600/30 hover:bg-neutral-900/80 hover:shadow-red-600/10"
+              >
+                <div className="absolute inset-0 z-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-40" />
+                <div className="relative z-10 overflow-hidden rounded-[2rem]">
+                  <img 
+                    src={img} 
+                    className="w-full aspect-[3/4] object-cover block transform transition-transform duration-700" 
+                    alt={`Instructor ${i + 1}`}
+                    referrerPolicy="no-referrer"
+                    loading="lazy"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </section>
 
       {/* --- 5. 상담 및 푸터 --- */}
@@ -1594,6 +1651,40 @@ export default function App() {
                   </form>
                 )}
               </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* --- 강사진 사진 크게 보기 모달 --- */}
+      <AnimatePresence>
+        {selectedInstructorImg && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedInstructorImg(null)}
+              className="absolute inset-0 bg-neutral-950/95 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="relative z-[210] max-h-screen max-w-4xl"
+            >
+              <button 
+                onClick={() => setSelectedInstructorImg(null)}
+                className="absolute -top-12 right-0 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition cursor-pointer"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <img 
+                src={selectedInstructorImg} 
+                className="max-h-[85vh] w-auto rounded-2xl object-contain shadow-2xl border border-white/10" 
+                alt="Enlarged Instructor"
+                referrerPolicy="no-referrer"
+              />
             </motion.div>
           </div>
         )}
