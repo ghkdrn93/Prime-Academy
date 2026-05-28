@@ -395,7 +395,7 @@ export default function App() {
               "https://i.ibb.co/G3WFTZ4p/Kakao-Talk-20260516-133934830.png",
               "https://i.ibb.co/N6hjvfk5/Kakao-Talk-20260520-203923393.jpg",
               "https://i.ibb.co/7fQfzJs/Kakao-Talk-20260524-233423934-02.png",
-              "https://i.ibb.co/QF2ZkNqn/Kakao-Talk-20260524-233423934-04.jpg"
+              "https://i.ibb.co/ymwkc9jY/Kakao-Talk-20260527-074525938.png"
             ].map((img, i) => (
               <motion.div 
                 key={i}
