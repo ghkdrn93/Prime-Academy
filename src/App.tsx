@@ -39,6 +39,7 @@ export default function App() {
   const [selectedInstructorImg, setSelectedInstructorImg] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [tuitionTab, setTuitionTab] = useState<'all' | 'math' | 'english'>('all');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -112,6 +113,20 @@ export default function App() {
     },
   ];
 
+  const mathTuitionList = [
+    { process: "보습", subject: "초등수학", period: "1개월", hours: "일 120분 × 주 4회 × 4주 = 1,920분", target: "초등", capacity: "20명", fee: "390,000원", perMinute: "203원" },
+    { process: "보습", subject: "중등수학", period: "1개월", hours: "일 120분 × 주 4회 × 4주 = 1,920분", target: "중등", capacity: "20명", fee: "420,000원", perMinute: "218원" },
+    { process: "보습", subject: "고등수학", period: "1개월", hours: "일 120분 × 주 4회 × 4주 = 1,920분", target: "고등", capacity: "20명", fee: "435,000원", perMinute: "226원" },
+    { process: "보습", subject: "성인수학", period: "1개월", hours: "일 120분 × 주 4회 × 4주 = 1,920분", target: "성인", capacity: "20명", fee: "445,000원", perMinute: "231원" },
+  ];
+
+  const englishTuitionList = [
+    { process: "보습", subject: "초등영어", period: "1개월", hours: "일 120분 × 주 4회 × 4주 = 1,920분", target: "초등", capacity: "20명", fee: "390,000원", perMinute: "203원" },
+    { process: "보습", subject: "중등영어", period: "1개월", hours: "일 120분 × 주 4회 × 4주 = 1,920분", target: "중등", capacity: "20명", fee: "420,000원", perMinute: "218원" },
+    { process: "보습", subject: "고등영어", period: "1개월", hours: "일 120분 × 주 4회 × 4주 = 1,920분", target: "고등", capacity: "20명", fee: "435,000원", perMinute: "226원" },
+    { process: "보습", subject: "성인영어", period: "1개월", hours: "일 120분 × 주 4회 × 4주 = 1,920분", target: "성인", capacity: "20명", fee: "445,000원", perMinute: "231원" },
+  ];
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white selection:bg-red-500/30 font-sans scroll-smooth">
       
@@ -141,6 +156,7 @@ export default function App() {
               Home
             </button>
             <a href="#programs" className="hover:text-white transition-colors">Programs</a>
+            <a href="#tuition" className="hover:text-white transition-colors">Tuition</a>
             <a href="#instructors" className="hover:text-white transition-colors">Instructors</a>
             <a href="#elite" className="hover:text-amber-500 transition-colors">Elite Track</a>
             <a href="#contact" className="hover:text-white transition-colors">Contact</a>
@@ -296,67 +312,210 @@ export default function App() {
       </section>
       
       {/* --- 수강료 안내 섹션 --- */}
-      <section className="mx-auto max-w-7xl px-6 py-32 lg:px-10">
+      <section id="tuition" className="mx-auto max-w-7xl px-6 py-32 lg:px-10">
         <motion.div 
           {...fadeInUp}
-          className="overflow-hidden rounded-[3rem] border border-white/5 bg-neutral-900/40 p-10 lg:p-16 backdrop-blur-xl"
+          className="overflow-hidden rounded-[3rem] border border-white/5 bg-neutral-900/40 p-6 sm:p-10 lg:p-16 backdrop-blur-xl"
         >
-          <div className="mb-16 text-center">
+          <div className="mb-12 text-center">
             <div className="text-sm font-bold tracking-[0.4em] text-red-500 uppercase">Tuition & Fees</div>
             <h2 className="mt-4 text-3xl font-black sm:text-5xl">프라임 학원 수강료</h2>
+            <p className="mt-3 text-sm text-neutral-400 font-medium">
+              학원의 설립·운영 및 과외교습에 관한 법률에 따른 교습비 및 분당단가 공개
+            </p>
           </div>
 
-          <div className="relative">
-            {/* Mobile Scroll Hint */}
-            <div className="mb-4 flex items-center justify-center gap-2 text-xs font-bold text-neutral-500 md:hidden">
-              <ArrowRight className="h-3 w-3 rotate-180 opacity-50" />
-              좌우로 스크롤하여 확인하세요
-              <ArrowRight className="h-3 w-3 opacity-50" />
+          {/* 과정 선택 탭 필터 */}
+          <div className="mb-10 flex justify-center">
+            <div className="inline-flex rounded-2xl bg-white/5 p-1.5 border border-white/10 backdrop-blur-md">
+              {[
+                { id: 'all', label: '전체 교습과정' },
+                { id: 'math', label: '수학 과정' },
+                { id: 'english', label: '영어 과정' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setTuitionTab(tab.id as 'all' | 'math' | 'english')}
+                  className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                    tuitionTab === tab.id
+                      ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
+                      : 'text-neutral-400 hover:text-white'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
+          </div>
 
-            <div className="overflow-x-auto pb-6 scrollbar-hide">
-              <table className="w-full min-w-[600px] text-left md:min-w-0">
-                <thead>
-                  <tr className="border-b border-white/10">
-                    <th className="pb-4 text-xs font-black uppercase tracking-widest text-neutral-500">구분</th>
-                    <th className="pb-4 text-right text-xs font-black uppercase tracking-widest text-neutral-500">2회</th>
-                    <th className="pb-4 text-right text-xs font-black uppercase tracking-widest text-neutral-500">3회</th>
-                    <th className="pb-4 text-right text-xs font-black uppercase tracking-widest text-neutral-500">4회</th>
-                    <th className="pb-4 text-right text-xs font-black uppercase tracking-widest text-neutral-500">5회</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  {[
-                    { label: "초등", prices: ["200,000", "300,000", "390,000", "510,000"] },
-                    { label: "중등", prices: ["210,000", "320,000", "430,000", "530,000"] },
-                    { label: "고등", prices: ["210,000", "320,000", "430,000", "540,000"] },
-                    { label: "N수생/성인", prices: ["220,000", "330,000", "445,000", "550,000"] },
-                  ].map((row, i) => (
-                    <tr key={i} className="group transition-colors hover:bg-white/5">
-                      <td className="py-6 text-lg font-black text-white">{row.label}</td>
-                      {row.prices.map((price, j) => (
-                        <td key={j} className="py-6 text-right font-mono text-lg font-bold text-neutral-400 group-hover:text-red-500">
-                          {price}
-                        </td>
+          {/* 모바일 가로 스크롤 안내 */}
+          <div className="mb-4 flex items-center justify-center gap-2 text-xs font-bold text-neutral-400 lg:hidden">
+            <ArrowRight className="h-3.5 w-3.5 rotate-180 opacity-60" />
+            좌우로 스크롤하여 전체 교습비 및 분당단가 명세를 확인하세요
+            <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+          </div>
+
+          <div className="space-y-12">
+            {/* 수학 교습과정 테이블 */}
+            {(tuitionTab === 'all' || tuitionTab === 'math') && (
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="inline-block h-3 w-3 rounded-full bg-red-500" />
+                    <h3 className="text-xl sm:text-2xl font-black text-white">수학 교습과정</h3>
+                    <span className="text-xs font-bold text-red-400 bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-full">
+                      Math Curriculum
+                    </span>
+                  </div>
+                  <span className="text-xs font-semibold text-neutral-400">정원 20명 · 주 4회 120분 (월 1,920분)</span>
+                </div>
+
+                <div className="overflow-x-auto rounded-2xl border border-white/10 bg-neutral-950/70 shadow-2xl">
+                  <table className="w-full min-w-[780px] text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10 bg-white/[0.03]">
+                        <th className="py-4 px-4 text-center text-xs font-bold uppercase tracking-wider text-neutral-400">교습과정</th>
+                        <th className="py-4 px-5 text-left text-xs font-bold uppercase tracking-wider text-neutral-400">교습과목(반)</th>
+                        <th className="py-4 px-4 text-center text-xs font-bold uppercase tracking-wider text-neutral-400">교습기간</th>
+                        <th className="py-4 px-5 text-left text-xs font-bold uppercase tracking-wider text-neutral-400">총 교습시간(A)</th>
+                        <th className="py-4 px-4 text-center text-xs font-bold uppercase tracking-wider text-neutral-400">교습대상</th>
+                        <th className="py-4 px-4 text-center text-xs font-bold uppercase tracking-wider text-neutral-400">정원</th>
+                        <th className="py-4 px-5 text-right text-xs font-bold uppercase tracking-wider text-neutral-400">교습비</th>
+                        <th className="py-4 px-5 text-right text-xs font-bold uppercase tracking-wider text-neutral-400">분당단가</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {mathTuitionList.map((row, idx) => (
+                        <tr key={idx} className="group transition-colors hover:bg-white/[0.04]">
+                          <td className="py-5 px-4 text-center">
+                            <span className="inline-block rounded-md bg-neutral-800 px-2.5 py-1 text-xs font-semibold text-neutral-300">
+                              {row.process}
+                            </span>
+                          </td>
+                          <td className="py-5 px-5">
+                            <span className="text-base font-black text-white group-hover:text-red-400 transition-colors">
+                              {row.subject}
+                            </span>
+                          </td>
+                          <td className="py-5 px-4 text-center text-sm font-medium text-neutral-300">
+                            {row.period}
+                          </td>
+                          <td className="py-5 px-5 text-xs sm:text-sm font-medium text-neutral-300 whitespace-nowrap">
+                            {row.hours}
+                          </td>
+                          <td className="py-5 px-4 text-center">
+                            <span className="inline-block rounded-full bg-red-950/60 border border-red-500/30 px-3 py-0.5 text-xs font-bold text-red-300">
+                              {row.target}
+                            </span>
+                          </td>
+                          <td className="py-5 px-4 text-center text-sm font-semibold text-neutral-300">
+                            {row.capacity}
+                          </td>
+                          <td className="py-5 px-5 text-right font-mono text-base font-black text-white group-hover:text-red-400 transition-colors whitespace-nowrap">
+                            {row.fee}
+                          </td>
+                          <td className="py-5 px-5 text-right font-mono text-sm font-bold text-neutral-400 whitespace-nowrap">
+                            {row.perMinute}
+                          </td>
+                        </tr>
                       ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* 영어 교습과정 테이블 */}
+            {(tuitionTab === 'all' || tuitionTab === 'english') && (
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="inline-block h-3 w-3 rounded-full bg-blue-500" />
+                    <h3 className="text-xl sm:text-2xl font-black text-white">영어 교습과정</h3>
+                    <span className="text-xs font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 rounded-full">
+                      English Curriculum
+                    </span>
+                  </div>
+                  <span className="text-xs font-semibold text-neutral-400">정원 20명 · 주 4회 120분 (월 1,920분)</span>
+                </div>
+
+                <div className="overflow-x-auto rounded-2xl border border-white/10 bg-neutral-950/70 shadow-2xl">
+                  <table className="w-full min-w-[780px] text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10 bg-white/[0.03]">
+                        <th className="py-4 px-4 text-center text-xs font-bold uppercase tracking-wider text-neutral-400">교습과정</th>
+                        <th className="py-4 px-5 text-left text-xs font-bold uppercase tracking-wider text-neutral-400">교습과목(반)</th>
+                        <th className="py-4 px-4 text-center text-xs font-bold uppercase tracking-wider text-neutral-400">교습기간</th>
+                        <th className="py-4 px-5 text-left text-xs font-bold uppercase tracking-wider text-neutral-400">총 교습시간(A)</th>
+                        <th className="py-4 px-4 text-center text-xs font-bold uppercase tracking-wider text-neutral-400">교습대상</th>
+                        <th className="py-4 px-4 text-center text-xs font-bold uppercase tracking-wider text-neutral-400">정원</th>
+                        <th className="py-4 px-5 text-right text-xs font-bold uppercase tracking-wider text-neutral-400">교습비</th>
+                        <th className="py-4 px-5 text-right text-xs font-bold uppercase tracking-wider text-neutral-400">분당단가</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {englishTuitionList.map((row, idx) => (
+                        <tr key={idx} className="group transition-colors hover:bg-white/[0.04]">
+                          <td className="py-5 px-4 text-center">
+                            <span className="inline-block rounded-md bg-neutral-800 px-2.5 py-1 text-xs font-semibold text-neutral-300">
+                              {row.process}
+                            </span>
+                          </td>
+                          <td className="py-5 px-5">
+                            <span className="text-base font-black text-white group-hover:text-red-400 transition-colors">
+                              {row.subject}
+                            </span>
+                          </td>
+                          <td className="py-5 px-4 text-center text-sm font-medium text-neutral-300">
+                            {row.period}
+                          </td>
+                          <td className="py-5 px-5 text-xs sm:text-sm font-medium text-neutral-300 whitespace-nowrap">
+                            {row.hours}
+                          </td>
+                          <td className="py-5 px-4 text-center">
+                            <span className="inline-block rounded-full bg-blue-950/60 border border-blue-500/30 px-3 py-0.5 text-xs font-bold text-blue-300">
+                              {row.target}
+                            </span>
+                          </td>
+                          <td className="py-5 px-4 text-center text-sm font-semibold text-neutral-300">
+                            {row.capacity}
+                          </td>
+                          <td className="py-5 px-5 text-right font-mono text-base font-black text-white group-hover:text-red-400 transition-colors whitespace-nowrap">
+                            {row.fee}
+                          </td>
+                          <td className="py-5 px-5 text-right font-mono text-sm font-bold text-neutral-400 whitespace-nowrap">
+                            {row.perMinute}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="mt-12 grid gap-6 border-t border-white/10 pt-12 sm:grid-cols-2 lg:grid-cols-3">
             <div className="flex items-center gap-4 rounded-2xl bg-white/5 p-5">
-              <CheckCircle2 className="w-6 h-6 text-red-600" />
-              <span className="text-sm font-bold text-neutral-300">대치동식 365일 특수 관리!</span>
+              <CheckCircle2 className="w-6 h-6 text-red-600 shrink-0" />
+              <div>
+                <div className="text-sm font-bold text-neutral-200">대치동식 365일 특수 관리!</div>
+                <div className="text-xs text-neutral-400">밀착 피드백 및 개별 학습 지도</div>
+              </div>
             </div>
             <div className="flex items-center gap-4 rounded-2xl bg-white/5 p-5">
-              <CheckCircle2 className="w-6 h-6 text-red-600" />
-              <span className="text-sm font-bold text-neutral-300">관리형 독서실 및 스터디 무료 제공!</span>
+              <CheckCircle2 className="w-6 h-6 text-red-600 shrink-0" />
+              <div>
+                <div className="text-sm font-bold text-neutral-200">관리형 독서실 및 스터디 무료 제공!</div>
+                <div className="text-xs text-neutral-400">자습 공간 및 1:1 질의응답 지원</div>
+              </div>
             </div>
             <div className="flex items-center gap-4 rounded-2xl bg-red-600/10 p-5 border border-red-600/20">
-              <span className="text-sm font-bold text-red-400">※ 코칭 수업료 및 교재비는 별도</span>
+              <ShieldCheck className="w-6 h-6 text-red-500 shrink-0" />
+              <div>
+                <div className="text-xs font-bold text-red-400">학원설립운영등록증명서 제5320호</div>
+                <div className="text-[11px] text-neutral-400 mt-0.5">※ 교습비 반환은 학원법 시행령 제18조에 따릅니다.</div>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -467,7 +626,7 @@ export default function App() {
               <MapPin className="mt-1 w-6 h-6 text-red-600" />
               <div>
                 <div className="font-black uppercase tracking-widest text-neutral-400 text-xs">Address</div>
-                <div className="mt-2 font-bold text-lg">경기도 화성시 동탄구<br />동탄순환대로 20, 2~3층</div>
+                <div className="mt-2 font-bold text-lg">경기도 화성시 동탄구<br />동탄순환대로 20, 3층</div>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -511,13 +670,15 @@ export default function App() {
             {/* Details */}
             <div className="space-y-2 text-center md:text-left">
               <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 text-[12px] font-bold text-neutral-500 md:justify-start">
-                <span>주소 : 경기도 화성시 동탄구 동탄순환대로 20, 2~3층</span>
+                <span>주소 : 경기도 화성시 동탄구 동탄순환대로 20, 3층</span>
                 <span className="text-neutral-800">·</span>
                 <span>전화번호 : 1800-7130</span>
                 <span className="text-neutral-800">·</span>
                 <span>팩스번호 : 070-7507-8709</span>
                 <span className="text-neutral-800">·</span>
                 <span>사업자등록번호 : 217-11-68827</span>
+                <span className="text-neutral-800">·</span>
+                <span>학원설립운영등록증명서 제5320호</span>
               </div>
               <div className="text-[11px] font-bold text-neutral-600">
                 Copyright © 프라임 학원 All Rights Reserved.
